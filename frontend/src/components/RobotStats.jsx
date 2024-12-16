@@ -13,7 +13,7 @@ import {
 const RobotStats = () => {
   const [robots, setRobots] = useState([]);
 
-  // Fetch data from the backend using the fetch API
+  
   useEffect(() => {
     fetch("https://robotair-robot-fleet-monitoring-k6x0.onrender.com/api/robots") // FastAPI backend endpoint
       .then((response) => response.json())

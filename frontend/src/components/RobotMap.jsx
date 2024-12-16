@@ -1,8 +1,8 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet"; // Import Leaflet library
+import L from "leaflet"; 
 
-// Fix for default marker icon to avoid issues with missing default icon image
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -12,11 +12,11 @@ L.Icon.Default.mergeOptions({
 });
 
 const RobotMap = ({ robots }) => {
-  const defaultCenter = [40.7128, -74.0060]; // Default center (e.g., NYC)
+  const defaultCenter = [40.7128, -74.0060]; 
   const locations = robots.map((robot) => robot["Location Coordinates"]);
   const mapCenter =
     locations.length > 0
-      ? [locations[0][0], locations[0][1]] // Use the first robot's location as the map center
+      ? [locations[0][0], locations[0][1]] 
       : defaultCenter;
 
   return (
@@ -24,8 +24,8 @@ const RobotMap = ({ robots }) => {
       <h2 className="text-xl font-semibold mb-4">Robot Locations</h2>
       <div className="h-full w-full rounded-lg overflow-hidden">
         <MapContainer
-          center={mapCenter} // Dynamically set center
-          zoom={13} // Zoom level of the map
+          center={mapCenter} 
+          zoom={13} 
           style={{ height: "100%", width: "100%" }}
         >
           <TileLayer

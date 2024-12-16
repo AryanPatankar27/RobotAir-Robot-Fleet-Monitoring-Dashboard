@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Battery, Cpu, MemoryStick } from "lucide-react";
 
 const RobotList = ({ robots }) => {
-  const [filter, setFilter] = useState("All"); // State for selected filter
+  const [filter, setFilter] = useState("All"); 
 
-  // Handle filtering logic
+  
   const getFilteredRobots = () => {
     switch (filter) {
       case "Active":

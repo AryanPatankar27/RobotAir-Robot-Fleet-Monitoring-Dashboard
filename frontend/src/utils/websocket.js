@@ -6,10 +6,10 @@ export class WebSocketService {
   }
 
   connect(onMessage) {
-    // Assign the callback to handle incoming messages
+    
     this.onMessageCallback = onMessage;
 
-    // Initialize WebSocket connection
+    
     this.websocket = new WebSocket(this.url);
 
     this.websocket.onopen = () => {
@@ -20,7 +20,7 @@ export class WebSocketService {
       try {
         const data = JSON.parse(event.data);
         if (this.onMessageCallback) {
-          this.onMessageCallback(data); // Pass data to callback
+          this.onMessageCallback(data); 
         }
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
