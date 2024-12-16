@@ -45,10 +45,12 @@ Before setting up the project, ensure you have the following installed:
 ```bash
 git clone https://github.com/your-username/robot-fleet-monitoring.git
 cd robot-fleet-monitoring
-2. Backend Setup
+```
+
+### 2. Backend Setup
 Navigate to the backend folder to set up the FastAPI server.
 
-bash
+``` bash
 Copy code
 cd backend
 Install Python Dependencies
