@@ -19,7 +19,7 @@ const Dashboard = ({ robots }) => {
   };
 
   useEffect(() => {
-    const wsService = new WebSocketService("wss://robotair-robot-fleet-monitoring-k6x0.onrender.com/ws");
+    const wsService = new WebSocketService("wss://robotair-robot-fleet-monitoring-k6x0.onrender.com/api/robots/ws");
     wsService.connect(handleNewRobotData); // Handle new robot data
 
     return () => {
