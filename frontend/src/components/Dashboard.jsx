@@ -2,57 +2,30 @@ import React, { useState, useEffect } from "react";
 import RobotList from "./RobotList";
 import RobotMap from "./RobotMap";
 import RobotStats from "./RobotStats";
+import { WebSocketService } from "../utils/websocket"; // Import WebSocketService
 
 const Dashboard = ({ robots }) => {
   const [error, setError] = useState(null); // State for error handling
+  const [updatedRobots, setUpdatedRobots] = useState(robots); // Store updated robots
 
-  // Handle WebSocket connection
-  const initializeWebSocket = () => {
-    const websocket = new WebSocket("ws://localhost:8000/ws");
-
-    websocket.onopen = () => {
-      console.log("WebSocket connection established.");
-    };
-
-    websocket.onmessage = (event) => {
-      try {
-        const updatedData = JSON.parse(event.data);
-        // Only update state if the new data is different from the current data
-        setRobots((prevRobots) => {
-          if (JSON.stringify(updatedData) !== JSON.stringify(prevRobots)) {
-            return updatedData;
-          }
-          return prevRobots; // Don't update if data is the same
-        });
-      } catch (err) {
-        console.error("Error parsing WebSocket message:", err);
+  const handleNewRobotData = (newData) => {
+    // Update robots state if the data has changed
+    setUpdatedRobots((prevRobots) => {
+      if (JSON.stringify(newData) !== JSON.stringify(prevRobots)) {
+        return newData;
       }
-    };
-
-    websocket.onerror = (err) => {
-      console.error("WebSocket encountered an error:", err);
-      setError("WebSocket error occurred. Live updates may not work.");
-    };
-
-    websocket.onclose = () => {
-      console.log("WebSocket connection closed.");
-    };
-
-    return websocket; // Return WebSocket instance for cleanup
+      return prevRobots; // Don't update if data is the same
+    });
   };
 
   useEffect(() => {
-    // Initialize WebSocket connection
-    const websocket = initializeWebSocket();
+    const wsService = new WebSocketService("wss://robotair-robot-fleet-monitoring-k6x0.onrender.com/ws");
+    wsService.connect(handleNewRobotData); // Handle new robot data
 
-    // Cleanup WebSocket on component unmount
     return () => {
-      if (websocket) {
-        websocket.close();
-        console.log("WebSocket connection terminated.");
-      }
+      wsService.disconnect(); // Cleanup WebSocket on unmount
     };
-  }, []); // Run once on component mount
+  }, []);
 
   return (
     <div className="container mx-auto p-4">
@@ -65,17 +38,17 @@ const Dashboard = ({ robots }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Robot List */}
         <div className="bg-white rounded-lg shadow-md">
-          <RobotList robots={robots} />
+          <RobotList robots={updatedRobots} />
         </div>
 
         {/* Robot Map */}
         <div className="bg-white rounded-lg shadow-md p-4 h-96 overflow-y-auto">
-          <RobotMap robots={robots} />
+          <RobotMap robots={updatedRobots} />
         </div>
 
         {/* Robot Stats */}
         <div className="bg-white rounded-lg shadow-md p-4 lg:col-span-2">
-          <RobotStats robots={robots} />
+          <RobotStats robots={updatedRobots} />
         </div>
       </div>
     </div>
