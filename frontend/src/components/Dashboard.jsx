@@ -2,46 +2,57 @@ import React, { useState, useEffect } from "react";
 import RobotList from "./RobotList";
 import RobotMap from "./RobotMap";
 import RobotStats from "./RobotStats";
-import { WebSocketService } from "../utils/websocket"; // Import WebSocketService
 
-const Dashboard = () => {
-  const [robots, setRobots] = useState([]);
+const Dashboard = ({ robots }) => {
   const [error, setError] = useState(null); // State for error handling
 
-  const handleNewRobotData = (newData) => {
-    // Update robots state with new data
-    setRobots((prevRobots) => {
-      // Only update if the data has changed
-      if (JSON.stringify(newData) !== JSON.stringify(prevRobots)) {
-        return newData.robots; // Extract robots data from the WebSocket message
+  // Handle WebSocket connection
+  const initializeWebSocket = () => {
+    const websocket = new WebSocket("ws://localhost:8000/ws");
+
+    websocket.onopen = () => {
+      console.log("WebSocket connection established.");
+    };
+
+    websocket.onmessage = (event) => {
+      try {
+        const updatedData = JSON.parse(event.data);
+        // Only update state if the new data is different from the current data
+        setRobots((prevRobots) => {
+          if (JSON.stringify(updatedData) !== JSON.stringify(prevRobots)) {
+            return updatedData;
+          }
+          return prevRobots; // Don't update if data is the same
+        });
+      } catch (err) {
+        console.error("Error parsing WebSocket message:", err);
       }
-      return prevRobots;
-    });
+    };
+
+    websocket.onerror = (err) => {
+      console.error("WebSocket encountered an error:", err);
+      setError("WebSocket error occurred. Live updates may not work.");
+    };
+
+    websocket.onclose = () => {
+      console.log("WebSocket connection closed.");
+    };
+
+    return websocket; // Return WebSocket instance for cleanup
   };
 
   useEffect(() => {
-    // Connect to WebSocket server
-    const wsService = new WebSocketService("wss://robotair-robot-fleet-monitoring-k6x0.onrender.com/api/robots/ws");
-    wsService.connect(handleNewRobotData); // Handle new robot data via WebSocket
+    // Initialize WebSocket connection
+    const websocket = initializeWebSocket();
 
-    // Fetch initial robots data via HTTP
-    const fetchInitialData = async () => {
-      try {
-        const response = await fetch("https://robotair-robot-fleet-monitoring-k6x0.onrender.com/api/robots");
-        const data = await response.json();
-        setRobots(data.robots); // Set initial robots data
-      } catch (error) {
-        console.error("Error fetching robots:", error);
-        setError("Error fetching robots data");
+    // Cleanup WebSocket on component unmount
+    return () => {
+      if (websocket) {
+        websocket.close();
+        console.log("WebSocket connection terminated.");
       }
     };
-
-    fetchInitialData(); // Fetch initial data
-
-    return () => {
-      wsService.disconnect(); // Cleanup WebSocket connection on unmount
-    };
-  }, []);
+  }, []); // Run once on component mount
 
   return (
     <div className="container mx-auto p-4">
