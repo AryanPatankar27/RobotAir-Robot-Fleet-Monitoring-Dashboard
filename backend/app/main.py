@@ -4,13 +4,13 @@ import json
 import asyncio
 import os
 
-# Initialize the FastAPI application
+
 app = FastAPI()
 
 # Enable CORS (adjust "allow_origins" for production)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -40,13 +40,13 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            # Simulate periodic updates (you can replace this with actual logic)
+            
             for robot in ROBOT_DATA:
                 if robot["battery"] > 0:
-                    robot["battery"] -= 5  # Decrease battery as an example
+                    robot["battery"] -= 5  
                     robot["status"] = "low battery" if robot["battery"] < 20 else "active"
-            await websocket.send_json(ROBOT_DATA)  # Send updated data
-            await asyncio.sleep(5)  # Update every 5 seconds
+            await websocket.send_json(ROBOT_DATA)  
+            await asyncio.sleep(5)  
     except Exception as e:
         print(f"WebSocket error: {e}")
     finally:
