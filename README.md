@@ -53,6 +53,7 @@ Navigate to the backend folder to set up the FastAPI server.
 ``` bash
 Copy code
 cd backend
+```
 Install Python Dependencies
 bash
 Copy code
