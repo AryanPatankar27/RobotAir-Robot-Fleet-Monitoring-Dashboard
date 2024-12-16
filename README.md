@@ -118,7 +118,7 @@ Dashboard Component:
 Accepts the robot data as props and renders it using its child components (RobotList, RobotMap, RobotStats).
 ```
 ## Running the Project
-###Follow these steps to run the project locally:
+Follow these steps to run the project locally:
 
 ### 1.Start the Backend Server:
 ```bash
