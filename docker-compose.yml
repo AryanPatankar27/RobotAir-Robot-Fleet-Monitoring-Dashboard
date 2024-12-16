@@ -6,7 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5173:5173" # Expose the frontend service on port 5173 (Vite default)
+      - "5173:5173" 
     networks:
       - app-network
 
@@ -15,8 +15,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000" # Expose the backend service on port 8000
-    networks:
+      - "8000:8000" 
       - app-network
 
 networks:

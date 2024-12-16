@@ -4,9 +4,9 @@ import RobotMap from "./RobotMap";
 import RobotStats from "./RobotStats";
 
 const Dashboard = ({ robots }) => {
-  const [error, setError] = useState(null); // State for error handling
+  const [error, setError] = useState(null); 
 
-  // Handle WebSocket connection
+  
   const initializeWebSocket = () => {
     const websocket = new WebSocket("ws://localhost:8000/ws");
 
@@ -17,12 +17,12 @@ const Dashboard = ({ robots }) => {
     websocket.onmessage = (event) => {
       try {
         const updatedData = JSON.parse(event.data);
-        // Only update state if the new data is different from the current data
+        
         setRobots((prevRobots) => {
           if (JSON.stringify(updatedData) !== JSON.stringify(prevRobots)) {
             return updatedData;
           }
-          return prevRobots; // Don't update if data is the same
+          return prevRobots; 
         });
       } catch (err) {
         console.error("Error parsing WebSocket message:", err);
@@ -38,21 +38,21 @@ const Dashboard = ({ robots }) => {
       console.log("WebSocket connection closed.");
     };
 
-    return websocket; // Return WebSocket instance for cleanup
+    return websocket; 
   };
 
   useEffect(() => {
-    // Initialize WebSocket connection
+    
     const websocket = initializeWebSocket();
 
-    // Cleanup WebSocket on component unmount
+    
     return () => {
       if (websocket) {
         websocket.close();
         console.log("WebSocket connection terminated.");
       }
     };
-  }, []); // Run once on component mount
+  }, []); 
 
   return (
     <div className="container mx-auto p-4">

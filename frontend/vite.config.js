@@ -5,16 +5,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: "localhost",
-    port: 5173, // Ensure this matches the frontend's development port
+    port: 5173, 
     proxy: {
       "/api": {
-        target: "http://localhost:8000", // Backend REST API
-        changeOrigin: true, // Rewrite the Host header to match the target
-        rewrite: (path) => path.replace(/^\/api/, ""), // Map /api/* to the backend's base URL
+        target: "http://localhost:8000", 
+        changeOrigin: true, 
+        rewrite: (path) => path.replace(/^\/api/, ""), 
       },
       "/ws": {
-        target: "ws://localhost:8000", // WebSocket endpoint
-        ws: true, // Enable WebSocket proxying
+        target: "ws://localhost:8000", // 
+        ws: true, 
         changeOrigin: true,
       },
     },

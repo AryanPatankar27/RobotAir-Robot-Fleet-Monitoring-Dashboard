@@ -15,7 +15,7 @@ const RobotStats = () => {
 
   
   useEffect(() => {
-    fetch("https://robotair-robot-fleet-monitoring-k6x0.onrender.com/api/robots") // FastAPI backend endpoint
+    fetch("https://robotair-robot-fleet-monitoring-k6x0.onrender.com/api/robots") 
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -39,7 +39,7 @@ const RobotStats = () => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="Robot ID"
-              tickFormatter={(value) => value.slice(0, 8)} // Shorten Robot ID
+              tickFormatter={(value) => value.slice(0, 8)} 
             />
             <YAxis />
             <Tooltip />

@@ -5,7 +5,7 @@ export default {
   darkMode: ["class"],
   content: [
     './index.html',
-    './src/**/*.{js,jsx,ts,tsx}', // You can also include TypeScript files if you're using them
+    './src/**/*.{js,jsx,ts,tsx}', 
   ],
   theme: {
     container: {

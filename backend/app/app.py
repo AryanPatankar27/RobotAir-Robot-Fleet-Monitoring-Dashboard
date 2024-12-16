@@ -7,7 +7,7 @@ import os
 
 app = FastAPI()
 
-# Enable CORS (adjust "allow_origins" for production)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load mock data (ensure mock_data.json exists in the same directory as main.py)
+
 ROBOT_DATA = []
 mock_data_path = os.path.join(os.path.dirname(__file__), "mock_data.json")
 if os.path.exists(mock_data_path):
